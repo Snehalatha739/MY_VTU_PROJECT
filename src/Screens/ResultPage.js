@@ -1,8 +1,25 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {Row,Col,Form} from 'react-bootstrap';
 import TableData from './TableData';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const ResultPage = () => {
+    const[studentDetails,setStudentDetails]=useState([])
+    const value = useParams()
+    useEffect(()=>{
+        axios.get('http://localhost:3001/studentInfo')
+        .then((response) => {
+            response.data.map((data) => {
+                if(data.registerId === value.id){
+                setStudentDetails(data)
+                }
+            })
+        }).catch((error) => console.log("error",error))
+       },[studentDetails])
+    console.log("state",studentDetails)
+
+    
     return(
         <>
            <Row className='justify-content-center my-5'>
@@ -20,26 +37,75 @@ const ResultPage = () => {
             <Col sm={12} md={6}>
                 <Form.Group>
                      <Form.Label>Student Name:</Form.Label>
-                     <Form.Label style={{marginLeft:"4.5rem"}}>Sneha Singh</Form.Label><br/>
+                     <Form.Label style={{marginLeft:"4.5rem"}}>{studentDetails.studentName}</Form.Label><br/>
                      <Form.Label>Father's/Mother' Name:</Form.Label>
-                     <Form.Label style={{marginLeft:"1rem"}}>Dev.K</Form.Label><br/>
+                     <Form.Label style={{marginLeft:"1rem"}}>{studentDetails.FatherName}</Form.Label><br/>
                      <Form.Label>College Name:</Form.Label>
-                     <Form.Label style={{marginLeft:"4.5rem"}}>PES University</Form.Label>
+                     <Form.Label style={{marginLeft:"4.5rem"}}>{studentDetails.collegeName}</Form.Label><br/>
+                     
                      
                 </Form.Group>
             </Col>
 
              <Col sm={12} md={6}>
              <Form.Group>
-                  <Form.Label style={{float:"right"}}>RegisterNo: PES2UG20CS343</Form.Label>
+                  <Form.Label style={{float:"right"}}>RegisterNo: {studentDetails.registerId}</Form.Label>
                   
              </Form.Group>
             </Col>
 
            </Row>
+           <Row>
+            <TableData studentId = {studentDetails.registerId}/>
+           </Row>
 
            <Row>
-            <TableData/>
+             <Col sm={12} md={6}>
+                <Form.Group>
+                     <Form.Label>Student Name:</Form.Label>
+                     <Form.Label style={{marginLeft:"4.5rem"}}>{studentDetails.studentName}</Form.Label><br/>
+                     <Form.Label>Father's/Mother' Name:</Form.Label>
+                     <Form.Label style={{marginLeft:"1rem"}}>{studentDetails.FatherName}</Form.Label><br/>
+                     <Form.Label>College Name:</Form.Label>
+                     <Form.Label style={{marginLeft:"4.5rem"}}>{studentDetails.collegeName}</Form.Label><br/>
+                     
+                     
+                </Form.Group>
+            </Col>
+
+             <Col sm={12} md={6}>
+             <Form.Group>
+                  <Form.Label style={{float:"right"}}>RegisterNo: {studentDetails.registerId}</Form.Label>
+                  
+             </Form.Group>
+            </Col>
+           </Row>
+           <Row>
+            <TableData studentId = {studentDetails.registerId}/>
+           </Row>
+             <Row>
+             <Col sm={12} md={6}>
+                <Form.Group>
+                     <Form.Label>Student Name:</Form.Label>
+                     <Form.Label style={{marginLeft:"4.5rem"}}>{studentDetails.studentName}</Form.Label><br/>
+                     <Form.Label>Father's/Mother' Name:</Form.Label>
+                     <Form.Label style={{marginLeft:"1rem"}}>{studentDetails.FatherName}</Form.Label><br/>
+                     <Form.Label>College Name:</Form.Label>
+                     <Form.Label style={{marginLeft:"4.5rem"}}>{studentDetails.collegeName}</Form.Label><br/>
+                     
+                     
+                </Form.Group>
+            </Col>
+
+             <Col sm={12} md={6}>
+             <Form.Group>
+                  <Form.Label style={{float:"right"}}>RegisterNo: {studentDetails.registerId}</Form.Label>
+                  
+             </Form.Group>
+            </Col>
+           </Row>
+           <Row>
+            <TableData studentId = {studentDetails.registerId}/>
            </Row>
         </>
     )

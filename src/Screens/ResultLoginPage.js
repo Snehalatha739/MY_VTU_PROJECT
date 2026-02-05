@@ -1,15 +1,35 @@
 import React,{useState} from "react";
-import { Link } from 'react-router-dom';
-import {Row,Col,Form,Button} from 'react-bootstrap';
-
+import { Link,useNavigate,useParams } from 'react-router-dom';
+import {Row,Col,Form,Button,Alert} from 'react-bootstrap';
+import axios from 'axios';
 
 const ResultLoginPage = () => {
 
       const[registerInput,setRegisterInput] = useState("")
       const[error,setError]= useState("")
+      const navigate = useNavigate()
       
-      const submitHandler = ()=>{
-        console.log("hello")
+      
+      
+      const submitHandler = (e)=>{
+        e.preventDefault()
+        if(registerInput === ''){
+           setError("Please enter register id")
+        }else{
+         axios.get('http://localhost:3001/studentInfo')
+         .then((response) => {
+          console.log("res",response.data)
+         response.data.map((data,index) =>{
+          if(data.registerId === registerInput){
+            navigate(`/resultpage/${registerInput}`)
+          }else{
+            setError("Invalid Register id")
+          }
+         })
+       
+        })
+      }
+         
       }
     return(
         <>
@@ -26,8 +46,7 @@ const ResultLoginPage = () => {
             <Row>
                 <Col></Col>
                 <Col style={{marginLeft:"-20rem"}}>
-                
-                  <Form onSubmit={submitHandler}>
+                <Form onSubmit={(e)=>submitHandler(e)}>
                     <Form.Label>Enter your Register No:</Form.Label><br/>
                     <Form.Control type="text" placeholder="Enter your register no"
                     style={{width:"70%"}}
@@ -36,8 +55,11 @@ const ResultLoginPage = () => {
                     <Button type="submit" style={{marginTop:"1rem"}}>Submit</Button>
                       
                   </Form>
-                </Col>
+                  </Col>
             </Row>
+            <Row className="justify-content-center my-3">
+              { error ? <Alert variant='danger'>{ error }</Alert>: ''}
+             </Row>
         
         </>
     )

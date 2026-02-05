@@ -31,3 +31,5 @@ marquee{
 th,td{
          text-align: center;
 }
+
+ /* npx json-server --watch studentInfo.json --port 3001 */
